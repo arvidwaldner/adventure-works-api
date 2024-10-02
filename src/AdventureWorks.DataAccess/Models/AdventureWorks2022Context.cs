@@ -13,6 +13,7 @@ public partial class AdventureWorks2022Context : DbContext
     public AdventureWorks2022Context(DbContextOptions<AdventureWorks2022Context> options)
         : base(options)
     {
+        
     }
 
     public virtual DbSet<Address> Addresses { get; set; }
@@ -192,9 +193,6 @@ public partial class AdventureWorks2022Context : DbContext
     public virtual DbSet<WorkOrder> WorkOrders { get; set; }
 
     public virtual DbSet<WorkOrderRouting> WorkOrderRoutings { get; set; }
-
-    protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-        => optionsBuilder.UseSqlServer("");
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {

@@ -12,6 +12,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\AdventureWorks.Common\AdventureWorks.Common.csproj" />
     <ProjectReference Include="..\AdventureWorks.Service\AdventureWorks.Service.csproj" />
   </ItemGroup>
 

@@ -6,8 +6,8 @@
     <Nullable>enable</Nullable>
   </PropertyGroup>
 
-  <ItemGroup>
-    <ProjectReference Include="..\..\AdventureWorks.Common\AdventureWorks.Common.csproj" />
+  <ItemGroup>    
+    <ProjectReference Include="..\AdventureWorks.Common\AdventureWorks.Common.csproj" />
     <ProjectReference Include="..\AdventureWorks.DataAccess\AdventureWorks.DataAccess.csproj" />
   </ItemGroup>
 

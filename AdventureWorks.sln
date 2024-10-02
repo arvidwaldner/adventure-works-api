@@ -15,7 +15,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AdventureWorks.Service.Test
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AdventureWorks.DataAccess.Test", "test\AdventureWorks.DataAccess.Test\AdventureWorks.DataAccess.Test.csproj", "{BC6EE48F-DB4D-40DE-9B68-2EFDD539D67C}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AdventureWorks.Common", "AdventureWorks.Common\AdventureWorks.Common.csproj", "{9384E3F3-7B83-4750-ADDF-0CD0D3B803EF}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AdventureWorks.Common", "src\AdventureWorks.Common\AdventureWorks.Common.csproj", "{9384E3F3-7B83-4750-ADDF-0CD0D3B803EF}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

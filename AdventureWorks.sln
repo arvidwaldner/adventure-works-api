@@ -5,6 +5,16 @@ VisualStudioVersion = 17.11.35312.102
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AdventureWorks.Http", "src\AdventureWorks.Http\AdventureWorks.Http.csproj", "{827A39DE-9A39-4148-8D91-1BC1C5BD7453}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AdventureWorks.Service", "src\AdventureWorks.Service\AdventureWorks.Service.csproj", "{F5625943-274A-4B4C-A969-B88EC2AD615D}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AdventureWorks.DataAccess", "src\AdventureWorks.DataAccess\AdventureWorks.DataAccess.csproj", "{E50A56F1-2FFB-4F3C-8A75-EA633E9EA66A}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AdventureWorks.Http.Test", "test\AdventureWorks.Http.Test\AdventureWorks.Http.Test.csproj", "{D338D614-2B66-4C93-8777-411F34F6A535}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AdventureWorks.Service.Test", "test\AdventureWorks.Service.Test\AdventureWorks.Service.Test.csproj", "{953036CC-5843-42B4-979D-83338E0FB9A5}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AdventureWorks.DataAccess.Test", "test\AdventureWorks.DataAccess.Test\AdventureWorks.DataAccess.Test.csproj", "{BC6EE48F-DB4D-40DE-9B68-2EFDD539D67C}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -15,6 +25,26 @@ Global
 		{827A39DE-9A39-4148-8D91-1BC1C5BD7453}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{827A39DE-9A39-4148-8D91-1BC1C5BD7453}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{827A39DE-9A39-4148-8D91-1BC1C5BD7453}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F5625943-274A-4B4C-A969-B88EC2AD615D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F5625943-274A-4B4C-A969-B88EC2AD615D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F5625943-274A-4B4C-A969-B88EC2AD615D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F5625943-274A-4B4C-A969-B88EC2AD615D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E50A56F1-2FFB-4F3C-8A75-EA633E9EA66A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E50A56F1-2FFB-4F3C-8A75-EA633E9EA66A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E50A56F1-2FFB-4F3C-8A75-EA633E9EA66A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E50A56F1-2FFB-4F3C-8A75-EA633E9EA66A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D338D614-2B66-4C93-8777-411F34F6A535}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D338D614-2B66-4C93-8777-411F34F6A535}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D338D614-2B66-4C93-8777-411F34F6A535}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D338D614-2B66-4C93-8777-411F34F6A535}.Release|Any CPU.Build.0 = Release|Any CPU
+		{953036CC-5843-42B4-979D-83338E0FB9A5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{953036CC-5843-42B4-979D-83338E0FB9A5}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{953036CC-5843-42B4-979D-83338E0FB9A5}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{953036CC-5843-42B4-979D-83338E0FB9A5}.Release|Any CPU.Build.0 = Release|Any CPU
+		{BC6EE48F-DB4D-40DE-9B68-2EFDD539D67C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{BC6EE48F-DB4D-40DE-9B68-2EFDD539D67C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{BC6EE48F-DB4D-40DE-9B68-2EFDD539D67C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{BC6EE48F-DB4D-40DE-9B68-2EFDD539D67C}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

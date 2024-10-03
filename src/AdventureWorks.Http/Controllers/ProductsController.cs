@@ -19,7 +19,24 @@ namespace AdventureWorks.Http.Controllers
         }
 
         /// <summary>
-        /// Gets a product by Id.
+        /// Returns all products.
+        /// </summary>
+        /// <returns>All products</returns>
+        /// <response code="200">Ok</response>
+        /// <response code="500">Internal server error</response>
+        [HttpGet]
+        [ProducesResponseType(typeof(List<ProductResponseModel>), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status500InternalServerError)]
+        public async Task<IActionResult> GetProducts()
+        {
+            var productResults = await _productsService.GetAllProducts();
+            var productResponseModels = MapProductResponseModels(productResults);
+
+            return Ok(productResponseModels);
+        }
+
+        /// <summary>
+        /// Returns a product by Id.
         /// </summary>
         /// <param name="id">The product Id.</param>
         /// <returns>The product with the specified Id.</returns>
@@ -38,6 +55,19 @@ namespace AdventureWorks.Http.Controllers
             var productResponseModel = MapProductResponseModel(productResult);
 
             return Ok(productResponseModel);
+        }
+        
+        
+        private List<ProductResponseModel> MapProductResponseModels(List<ProductResult> productResults)
+        {
+            var productResponseModels = new List<ProductResponseModel>();
+
+            foreach (var productResult in productResults) 
+            {
+                productResponseModels.Add(MapProductResponseModel(productResult));   
+            }
+
+            return productResponseModels;
         }
 
         private ProductResponseModel MapProductResponseModel(ProductResult productResult)

@@ -18,24 +18,26 @@ namespace AdventureWorks.Http.Controllers
             _productsService = productsService;
         }
 
-        [HttpGet]
+        /// <summary>
+        /// Gets a product by Id.
+        /// </summary>
+        /// <param name="id">The product Id.</param>
+        /// <returns>The product with the specified Id.</returns>
+        /// <response code="200">Ok</response>
+        /// <response code="400">Bad request</response>
+        /// <response code="404">Not found</response>
+        /// <response code="500">Internal server error</response>
+        [HttpGet("{id}")]
+        [ProducesResponseType(typeof(ProductResponseModel), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status404NotFound)]
+        [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status500InternalServerError)]
         public async Task<IActionResult> GetProduct(int id) 
         {
-            try
-            {
-                var productResult = await _productsService.GetProductById(id);
-                var productResponseModel = MapProductResponseModel(productResult);
+            var productResult = await _productsService.GetProductById(id);
+            var productResponseModel = MapProductResponseModel(productResult);
 
-                return Ok(productResponseModel);
-            }
-            catch(NotFoundException ex) 
-            {
-                return NotFound(ex);
-            }
-            catch(Exception ex) 
-            {
-                return BadRequest(ex);
-            }           
+            return Ok(productResponseModel);
         }
 
         private ProductResponseModel MapProductResponseModel(ProductResult productResult)

@@ -5,6 +5,8 @@
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
     <UserSecretsId>49952753-d795-43e1-8da2-b9f58b8dd068</UserSecretsId>
+	<GenerateDocumentationFile>true</GenerateDocumentationFile>
+	<DocumentationFile>bin\Debug\net8.0\AdventureWorks.Http.xml</DocumentationFile>
   </PropertyGroup>
 
   <ItemGroup>

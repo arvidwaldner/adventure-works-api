@@ -8,31 +8,31 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace AdventureWorks.Service
+namespace AdventureWorks.Service.Production
 {
     public interface IProductsService
     {
-        Task<List<ProductResult>> GetAllProductsAsync();
-        Task<ProductResult> GetProductByIdAsync(int id);
+        Task<List<ProductDto>> GetAllProductsAsync();
+        Task<ProductDto> GetProductByIdAsync(int id);
     }
 
     public class ProductsService : IProductsService
     {
         private readonly IProductRepository _productsRepository;
 
-        public ProductsService(IProductRepository productRepository) 
+        public ProductsService(IProductRepository productRepository)
         {
             _productsRepository = productRepository;
         }
 
-        public async Task<List<ProductResult>> GetAllProductsAsync()
+        public async Task<List<ProductDto>> GetAllProductsAsync()
         {
             var productEntities = _productsRepository.GetAll().ToList();
             var productResults = MapProducts(productEntities);
-            return productResults;            
+            return productResults;
         }
 
-        public async Task<ProductResult> GetProductByIdAsync(int id)
+        public async Task<ProductDto> GetProductByIdAsync(int id)
         {
             var productEntity = _productsRepository.GetById(id);
 
@@ -43,11 +43,11 @@ namespace AdventureWorks.Service
             return productResult;
         }
 
-        private List<ProductResult> MapProducts(List<Product> productEntities)
+        private List<ProductDto> MapProducts(List<Product> productEntities)
         {
-            var result = new List<ProductResult>();
+            var result = new List<ProductDto>();
 
-            foreach (var productEntity in productEntities) 
+            foreach (var productEntity in productEntities)
             {
                 result.Add(MapProduct(productEntity));
             }
@@ -55,9 +55,9 @@ namespace AdventureWorks.Service
             return result;
         }
 
-        private ProductResult MapProduct(Product productEntity)
+        private ProductDto MapProduct(Product productEntity)
         {
-            var productResult = new ProductResult
+            var productResult = new ProductDto
             {
                 ProductId = productEntity.ProductId,
                 ListPrice = productEntity.ListPrice,

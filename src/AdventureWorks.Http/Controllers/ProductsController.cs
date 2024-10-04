@@ -1,13 +1,13 @@
 ﻿using AdventureWorks.Common.Domain.Products;
 using AdventureWorks.Common.Exceptions;
 using AdventureWorks.Http.Responses.Products.v1;
-using AdventureWorks.Service;
+using AdventureWorks.Service.Production;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
 namespace AdventureWorks.Http.Controllers
 {
-    [Route("adventure-works/api/[controller]")]
+    [Route("adventure-works/api/production/[controller]")]
     [ApiController]
     public class ProductsController : ControllerBase
     {
@@ -51,6 +51,9 @@ namespace AdventureWorks.Http.Controllers
         [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status500InternalServerError)]
         public async Task<IActionResult> GetProduct(int id) 
         {
+            if (id <= 0)
+                throw new BadRequestException($"Id must be positive integer");
+
             var productResult = await _productsService.GetProductByIdAsync(id);
             var productResponseModel = MapProductResponseModel(productResult);
 
@@ -58,7 +61,7 @@ namespace AdventureWorks.Http.Controllers
         }
         
         
-        private List<ProductResponseModel> MapProductResponseModels(List<ProductResult> productResults)
+        private List<ProductResponseModel> MapProductResponseModels(List<ProductDto> productResults)
         {
             var productResponseModels = new List<ProductResponseModel>();
 
@@ -70,7 +73,7 @@ namespace AdventureWorks.Http.Controllers
             return productResponseModels;
         }
 
-        private ProductResponseModel MapProductResponseModel(ProductResult productResult)
+        private ProductResponseModel MapProductResponseModel(ProductDto productResult)
         {
             var productResponseModel = new ProductResponseModel
             {

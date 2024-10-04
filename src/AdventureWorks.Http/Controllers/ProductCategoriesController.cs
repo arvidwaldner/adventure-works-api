@@ -1,13 +1,14 @@
 ﻿using AdventureWorks.Common.Domain.Products;
+using AdventureWorks.Common.Exceptions;
 using AdventureWorks.DataAccess.Models;
 using AdventureWorks.Http.Responses.Products.v1;
-using AdventureWorks.Service;
+using AdventureWorks.Service.Production;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
 namespace AdventureWorks.Http.Controllers
 {
-    [Route("adventure-works/api/product-categories")]
+    [Route("adventure-works/api/production/product-categories")]
     [ApiController]
     public class ProductCategoriesController : ControllerBase
     {
@@ -21,7 +22,7 @@ namespace AdventureWorks.Http.Controllers
         /// <summary>
         /// Returns all product categories.
         /// </summary>
-        /// <returns>All product categoris</returns>
+        /// <returns>All product categories</returns>
         /// <response code="200">Ok</response>
         /// <response code="500">Internal server error</response>
         [HttpGet]
@@ -29,8 +30,8 @@ namespace AdventureWorks.Http.Controllers
         [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status500InternalServerError)]
         public async Task<IActionResult> GetProductCategories()
         {
-            var productResults =  _productCategoryService.GetProductCategories();
-            var productCategoryResponseModels = MapProductCategoryResponseModels(productResults);
+            var productCategoriesResults =  _productCategoryService.GetProductCategories();
+            var productCategoryResponseModels = MapProductCategoryResponseModels(productCategoriesResults);
 
             return Ok(productCategoryResponseModels);
         }
@@ -51,13 +52,16 @@ namespace AdventureWorks.Http.Controllers
         [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status500InternalServerError)]
         public async Task<IActionResult> GetProductCategoryById(int id)
         {
-            var productResult = _productCategoryService.GetProductCategoryById(id);
-            var productCategoryResponseModel = MapProductCategoryResponseModel(productResult);
+            if (id <= 0)
+                throw new BadRequestException($"Id must be positive integer");
+
+            var productCategoryResult = _productCategoryService.GetProductCategoryById(id);
+            var productCategoryResponseModel = MapProductCategoryResponseModel(productCategoryResult);
 
             return Ok(productCategoryResponseModel);
         }
 
-        private List<ProductCategoryResponseModel> MapProductCategoryResponseModels(List<ProductCategoryResult> productCategoryResults)
+        private List<ProductCategoryResponseModel> MapProductCategoryResponseModels(List<ProductCategoryDto> productCategoryResults)
         {
             var results = new List<ProductCategoryResponseModel>();
 
@@ -69,7 +73,7 @@ namespace AdventureWorks.Http.Controllers
             return results;
         }
 
-        private ProductCategoryResponseModel MapProductCategoryResponseModel(ProductCategoryResult productCategoryResult)
+        private ProductCategoryResponseModel MapProductCategoryResponseModel(ProductCategoryDto productCategoryResult)
         {
             var result = new ProductCategoryResponseModel()
             {

@@ -18,7 +18,7 @@ builder.Services.AddControllers(options =>
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen(c =>
 {
-    c.SwaggerDoc("v1", new OpenApiInfo { Title = "AdventureWorks REST API", Version = "v1" });
+    c.SwaggerDoc("v1", new OpenApiInfo { Title = "AdventureWorks HTTP REST API", Version = "v1" });
     c.DocumentFilter<LowercaseDocumentFilter>();
 
     var xmlFile = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";

@@ -1,4 +1,5 @@
 ﻿using AdventureWorks.DataAccess;
+using AdventureWorks.Service.Production;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using System;
@@ -21,6 +22,7 @@ namespace AdventureWorks.Service
         {
             services.AddTransient<IProductsService, ProductsService>();
             services.AddTransient<IProductCategoryService, ProductCategoryService>();
+            services.AddTransient<ILocationService, LocationService>();
         }
 
         private static void ConfigureDataAccess(IServiceCollection services, IConfiguration configuration)

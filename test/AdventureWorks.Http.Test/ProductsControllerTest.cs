@@ -2,7 +2,7 @@ using AdventureWorks.Common.Domain.Products;
 using AdventureWorks.Common.Exceptions;
 using AdventureWorks.Http.Controllers;
 using AdventureWorks.Http.Responses.Products.v1;
-using AdventureWorks.Service;
+using AdventureWorks.Service.Production;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
 using Moq;
@@ -16,14 +16,14 @@ namespace AdventureWorks.Http.Test
     {
         private ProductsController _target;
         private Mock<IProductsService> _productsServiceMock;
-        private Filler<ProductResult> _productResultFiller;
+        private Filler<ProductDto> _productResultFiller;
 
         [TestInitialize]
         public void Init() 
         {
             _productsServiceMock = new Mock<IProductsService>();
             _target = new ProductsController(_productsServiceMock.Object);
-            _productResultFiller = new Filler<ProductResult>();
+            _productResultFiller = new Filler<ProductDto>();
         }
 
         [TestCleanup]
@@ -63,7 +63,7 @@ namespace AdventureWorks.Http.Test
         public async Task GetProducts_NoExistingProducts_OkResponseAndEmptyListReturned()
         {
             _productsServiceMock.Setup(x => x.GetAllProductsAsync())
-                .ReturnsAsync(new List<ProductResult>());
+                .ReturnsAsync(new List<ProductDto>());
 
             var actual = await _target.GetProducts() as OkObjectResult;
             Assert.IsNotNull(actual);
@@ -79,7 +79,7 @@ namespace AdventureWorks.Http.Test
         [TestMethod]
         public async Task GetProducts_ThreeExistingProducts_OkResponseAndListWithThreeProductsReturnedOkResponse()
         {
-            var productResults = new List<ProductResult> 
+            var productResults = new List<ProductDto> 
             {
                 _productResultFiller.Create(),
                 _productResultFiller.Create(),
@@ -108,7 +108,7 @@ namespace AdventureWorks.Http.Test
             _productsServiceMock.Verify(X => X.GetAllProductsAsync(), Times.Once);
         }
 
-        private ProductResponseModel MapProductResponseModel(ProductResult productResult)
+        private ProductResponseModel MapProductResponseModel(ProductDto productResult)
         {
             var productResponseModel = new ProductResponseModel
             {

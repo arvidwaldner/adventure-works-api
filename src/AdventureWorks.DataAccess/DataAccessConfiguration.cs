@@ -1,5 +1,6 @@
 ﻿using AdventureWorks.DataAccess.Models;
 using AdventureWorks.DataAccess.Repositories;
+using AdventureWorks.DataAccess.Repositories.Production;
 using AdventureWorks.DataAccess.Repositories.Products;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
@@ -27,6 +28,7 @@ namespace AdventureWorks.DataAccess
             services.AddScoped(typeof(IRepository<>), typeof(Repository<>));
             services.AddScoped<IProductRepository, ProductRepository>();
             services.AddScoped<IProductCategoryRepository, ProductCategoryRepository>();
+            services.AddScoped<ILocationRepository, LocationRepository>();
         }
     }
 }

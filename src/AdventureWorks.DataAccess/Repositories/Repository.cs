@@ -12,6 +12,7 @@ namespace AdventureWorks.DataAccess.Repositories
     {
         IEnumerable<T> GetAll();
         T GetById(int id);
+        T GetById(short id);
         void Insert(T entity);
         void Update(T entity);
         void Delete(int id);
@@ -34,6 +35,11 @@ namespace AdventureWorks.DataAccess.Repositories
         }
 
         public T GetById(int id)
+        {
+            return _dbSet.Find(id);
+        }
+
+        public T GetById(short id)
         {
             return _dbSet.Find(id);
         }

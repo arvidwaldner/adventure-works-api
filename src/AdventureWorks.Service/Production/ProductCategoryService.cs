@@ -8,12 +8,12 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace AdventureWorks.Service
+namespace AdventureWorks.Service.Production
 {
     public interface IProductCategoryService
     {
-        List<ProductCategoryResult> GetProductCategories();
-        ProductCategoryResult GetProductCategoryById(int id);
+        List<ProductCategoryDto> GetProductCategories();
+        ProductCategoryDto GetProductCategoryById(int id);
     }
 
     public class ProductCategoryService : IProductCategoryService
@@ -25,7 +25,7 @@ namespace AdventureWorks.Service
             _productCategoryRepository = productCategoryRepository;
         }
 
-        public List<ProductCategoryResult> GetProductCategories()
+        public List<ProductCategoryDto> GetProductCategories()
         {
             var productCategories = _productCategoryRepository.GetAll().ToList();
             var productCategoryResults = MapProductCategoryResults(productCategories);
@@ -33,7 +33,7 @@ namespace AdventureWorks.Service
             return productCategoryResults;
         }
 
-        public ProductCategoryResult GetProductCategoryById(int id)
+        public ProductCategoryDto GetProductCategoryById(int id)
         {
             var productCategory = _productCategoryRepository.GetById(id);
 
@@ -44,11 +44,11 @@ namespace AdventureWorks.Service
             return productCategoryResult;
         }
 
-        private List<ProductCategoryResult> MapProductCategoryResults(List<ProductCategory> productCategories)
+        private List<ProductCategoryDto> MapProductCategoryResults(List<ProductCategory> productCategories)
         {
-            var results = new List<ProductCategoryResult>();
+            var results = new List<ProductCategoryDto>();
 
-            foreach (var productCategory in productCategories) 
+            foreach (var productCategory in productCategories)
             {
                 results.Add(MapProductCategoryResult(productCategory));
             }
@@ -56,9 +56,9 @@ namespace AdventureWorks.Service
             return results;
         }
 
-        private ProductCategoryResult MapProductCategoryResult(ProductCategory productCategory)
+        private ProductCategoryDto MapProductCategoryResult(ProductCategory productCategory)
         {
-            var result = new ProductCategoryResult()
+            var result = new ProductCategoryDto()
             {
                 ModifiedDate = productCategory.ModifiedDate,
                 Name = productCategory.Name,

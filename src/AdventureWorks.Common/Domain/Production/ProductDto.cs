@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace AdventureWorks.Common.Domain.Products
 {
-    public class ProductResult
+    public class ProductDto
     {
         public int ProductId { get; set; }
         public string Name { get; set; } = null!;

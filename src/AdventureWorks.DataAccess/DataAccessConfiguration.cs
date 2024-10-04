@@ -26,6 +26,7 @@ namespace AdventureWorks.DataAccess
         {
             services.AddScoped(typeof(IRepository<>), typeof(Repository<>));
             services.AddScoped<IProductRepository, ProductRepository>();
+            services.AddScoped<IProductCategoryRepository, ProductCategoryRepository>();
         }
     }
 }

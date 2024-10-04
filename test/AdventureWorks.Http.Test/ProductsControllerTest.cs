@@ -44,7 +44,7 @@ namespace AdventureWorks.Http.Test
 
             var expectedProductResponseModel = MapProductResponseModel(productResult);
 
-            _productsServiceMock.Setup(x => x.GetProductById(99))
+            _productsServiceMock.Setup(x => x.GetProductByIdAsync(99))
                 .ReturnsAsync(productResult);
 
             var actual = await _target.GetProduct(99) as OkObjectResult;
@@ -56,13 +56,13 @@ namespace AdventureWorks.Http.Test
 
             VerifyProductResponseModel(expectedProductResponseModel, responseContent);
 
-            _productsServiceMock.Verify(x => x.GetProductById(99), Times.Once);
+            _productsServiceMock.Verify(x => x.GetProductByIdAsync(99), Times.Once);
         }
 
         [TestMethod]
         public async Task GetProducts_NoExistingProducts_OkResponseAndEmptyListReturned()
         {
-            _productsServiceMock.Setup(x => x.GetAllProducts())
+            _productsServiceMock.Setup(x => x.GetAllProductsAsync())
                 .ReturnsAsync(new List<ProductResult>());
 
             var actual = await _target.GetProducts() as OkObjectResult;
@@ -73,7 +73,7 @@ namespace AdventureWorks.Http.Test
             Assert.IsNotNull(responseContent);
             Assert.AreEqual(0, responseContent.Count);
 
-            _productsServiceMock.Verify(x => x.GetAllProducts(), Times.Once);
+            _productsServiceMock.Verify(x => x.GetAllProductsAsync(), Times.Once);
         }
 
         [TestMethod]
@@ -93,7 +93,7 @@ namespace AdventureWorks.Http.Test
                 MapProductResponseModel(productResults[2]),
             };
 
-            _productsServiceMock.Setup(x => x.GetAllProducts())
+            _productsServiceMock.Setup(x => x.GetAllProductsAsync())
                 .ReturnsAsync(productResults);
 
             var actual = await _target.GetProducts() as OkObjectResult;
@@ -105,7 +105,7 @@ namespace AdventureWorks.Http.Test
             Assert.AreEqual(3, responseContent.Count);
 
             VerifyProductResponseModels(expectedProductResponseModels, responseContent);
-            _productsServiceMock.Verify(X => X.GetAllProducts(), Times.Once);
+            _productsServiceMock.Verify(X => X.GetAllProductsAsync(), Times.Once);
         }
 
         private ProductResponseModel MapProductResponseModel(ProductResult productResult)

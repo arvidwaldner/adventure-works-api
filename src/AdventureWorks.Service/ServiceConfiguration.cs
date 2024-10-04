@@ -20,6 +20,7 @@ namespace AdventureWorks.Service
         private static void AddServices(IServiceCollection services, IConfiguration configuration)
         {
             services.AddTransient<IProductsService, ProductsService>();
+            services.AddTransient<IProductCategoryService, ProductCategoryService>();
         }
 
         private static void ConfigureDataAccess(IServiceCollection services, IConfiguration configuration)

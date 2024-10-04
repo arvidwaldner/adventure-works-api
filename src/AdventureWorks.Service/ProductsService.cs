@@ -12,8 +12,8 @@ namespace AdventureWorks.Service
 {
     public interface IProductsService
     {
-        Task<List<ProductResult>> GetAllProducts();
-        Task<ProductResult> GetProductById(int id);
+        Task<List<ProductResult>> GetAllProductsAsync();
+        Task<ProductResult> GetProductByIdAsync(int id);
     }
 
     public class ProductsService : IProductsService
@@ -25,14 +25,14 @@ namespace AdventureWorks.Service
             _productsRepository = productRepository;
         }
 
-        public async Task<List<ProductResult>> GetAllProducts()
+        public async Task<List<ProductResult>> GetAllProductsAsync()
         {
             var productEntities = _productsRepository.GetAll().ToList();
             var productResults = MapProducts(productEntities);
             return productResults;            
         }
 
-        public async Task<ProductResult> GetProductById(int id)
+        public async Task<ProductResult> GetProductByIdAsync(int id)
         {
             var productEntity = _productsRepository.GetById(id);
 

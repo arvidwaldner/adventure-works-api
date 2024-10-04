@@ -7,7 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace AdventureWorks.Http.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("adventure-works/api/[controller]")]
     [ApiController]
     public class ProductsController : ControllerBase
     {
@@ -29,7 +29,7 @@ namespace AdventureWorks.Http.Controllers
         [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status500InternalServerError)]
         public async Task<IActionResult> GetProducts()
         {
-            var productResults = await _productsService.GetAllProducts();
+            var productResults = await _productsService.GetAllProductsAsync();
             var productResponseModels = MapProductResponseModels(productResults);
 
             return Ok(productResponseModels);
@@ -51,7 +51,7 @@ namespace AdventureWorks.Http.Controllers
         [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status500InternalServerError)]
         public async Task<IActionResult> GetProduct(int id) 
         {
-            var productResult = await _productsService.GetProductById(id);
+            var productResult = await _productsService.GetProductByIdAsync(id);
             var productResponseModel = MapProductResponseModel(productResult);
 
             return Ok(productResponseModel);

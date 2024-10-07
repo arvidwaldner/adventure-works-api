@@ -1,6 +1,7 @@
 ﻿using AdventureWorks.Common.Domain.Production;
 using AdventureWorks.Common.Exceptions;
 using AdventureWorks.DataAccess.Models;
+using AdventureWorks.Http.Constansts;
 using AdventureWorks.Http.Responses.Production.v1;
 using AdventureWorks.Http.Responses.Products.v1;
 using AdventureWorks.Service.Production;
@@ -9,7 +10,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace AdventureWorks.Http.Controllers
 {
-    [Route("adventure-works/api/production/[controller]")]
+    [Route($"{EndpointConstants.ProductionsUrl}/locations")]
     [ApiController]
     public class LocationController : ControllerBase
     {
@@ -51,7 +52,7 @@ namespace AdventureWorks.Http.Controllers
         [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status400BadRequest)]
         [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status404NotFound)]
         [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status500InternalServerError)]
-        public async Task<IActionResult> GetLocationById(short id)
+        public async Task<IActionResult> GetLocationById(int id)
         {
             if (id <= 0)
                 throw new BadRequestException($"Id must be positive integer");

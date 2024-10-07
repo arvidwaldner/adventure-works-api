@@ -20,15 +20,26 @@ namespace AdventureWorks.DataAccess
             services.AddDbContext<AdventureWorks2022Context>(options =>
                 options.UseSqlServer(configuration.GetConnectionString("AdventureWorksConnection")));
 
-            AddRepositories(services);
+            AddGenericRepository(services);
+            AddProductionRepositories(services);
+            AddHumanResourcesRepositories(services);
         }
 
-        private static void AddRepositories(IServiceCollection services)
+        private static void AddGenericRepository(IServiceCollection services)
         {
             services.AddScoped(typeof(IRepository<>), typeof(Repository<>));
+        }
+
+        private static void AddProductionRepositories(IServiceCollection services)
+        {
             services.AddScoped<IProductRepository, ProductRepository>();
             services.AddScoped<IProductCategoryRepository, ProductCategoryRepository>();
             services.AddScoped<ILocationRepository, LocationRepository>();
+        }
+
+        private static void AddHumanResourcesRepositories(IServiceCollection services)
+        {
+            services.AddScoped<IDepartmentRepository, DepartmentRepository>();
         }
     }
 }

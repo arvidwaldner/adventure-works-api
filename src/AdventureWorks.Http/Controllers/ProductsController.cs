@@ -1,5 +1,6 @@
 ﻿using AdventureWorks.Common.Domain.Products;
 using AdventureWorks.Common.Exceptions;
+using AdventureWorks.Http.Constansts;
 using AdventureWorks.Http.Responses.Products.v1;
 using AdventureWorks.Service.Production;
 using Microsoft.AspNetCore.Http;
@@ -7,7 +8,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace AdventureWorks.Http.Controllers
 {
-    [Route("adventure-works/api/production/[controller]")]
+    [Route($"{EndpointConstants.ProductionsUrl}/products")]
     [ApiController]
     public class ProductsController : ControllerBase
     {

@@ -2,6 +2,7 @@
 using AdventureWorks.Common.Exceptions;
 using AdventureWorks.DataAccess.Models;
 using AdventureWorks.Http.Constansts;
+using AdventureWorks.Http.Requests.HumanResources.v1;
 using AdventureWorks.Http.Responses.HumanResources.v1;
 using AdventureWorks.Http.Responses.Production.v1;
 using AdventureWorks.Service.HumanResources;
@@ -22,7 +23,7 @@ namespace AdventureWorks.Http.Controllers
         }
 
         /// <summary>
-        /// Returns all departments.
+        ///GET: Returns all departments.
         /// </summary>
         /// <returns>All departments</returns>
         /// <response code="200">Ok</response>
@@ -39,7 +40,7 @@ namespace AdventureWorks.Http.Controllers
         }
 
         /// <summary>
-        /// Returns a department by Id.
+        ///GET: Returns a department by Id.
         /// </summary>
         /// <param name="id">The department Id.</param>
         /// <returns>The department with the specified Id.</returns>
@@ -62,6 +63,96 @@ namespace AdventureWorks.Http.Controllers
 
             return Ok(departmentResponseModel);
         }
+
+        /// <summary>
+        ///POST: Creates a new department.
+        /// </summary>
+        /// <returns>The created department</returns>
+        /// <param name="request">Request for creating a new department</param>
+        /// <response code="201">Created</response>
+        /// <response code="400">Bad request</response>
+        /// <response code="500">Internal server error</response>
+        [HttpPost]
+        [ProducesResponseType(typeof(DepartmentResponseModel), StatusCodes.Status201Created)]
+        [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status500InternalServerError)]
+        public async Task<IActionResult> CreateDepartment(CreateDepartmentRequestModel request)
+        {
+            if (string.IsNullOrWhiteSpace(request.Name))
+                throw new BadRequestException($"The property '{nameof(CreateDepartmentRequestModel)}.{nameof(request.Name)}' cannot be empty");
+
+            if(string.IsNullOrWhiteSpace(request.GroupName))
+                throw new BadRequestException($"The property '{nameof(CreateDepartmentRequestModel)}.{nameof(request.GroupName)}' cannot be empty");
+
+            var departmentDto = new DepartmentDto 
+            {
+                GroupName = request.GroupName,
+                Name = request.Name
+            };
+
+            var createdDepartment = await _departmentService.CreateDepartment(departmentDto);
+            var createdDepartmentResponseModel = MapDepartmentResponseModel(createdDepartment);
+            var createdDepartmentUrl = $"{EndpointConstants.HumanResourcesUrl}/departments/{createdDepartmentResponseModel.DepartmentId}";
+
+            return Created(createdDepartmentUrl, createdDepartmentResponseModel);
+        }
+
+        /// <summary>
+        ///PUT: Updates an existing department.
+        /// </summary>
+        /// <param name="id">Id of the existing department to update</param>
+        /// <param name="request">Request for updating existing department</param>
+        /// <returns>No content</returns>
+        /// <response code="204">No content</response>
+        /// <response code="400">Bad request</response>
+        /// <response code="404">Not found</response>
+        /// <response code="500">Internal server error</response>
+        [HttpPut("{id}")]
+        [ProducesResponseType(StatusCodes.Status204NoContent)]
+        [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status404NotFound)]
+        [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status500InternalServerError)]
+        public async Task<IActionResult> UpdateDepartment(int id, UpdateDepartmentRequestModel request)
+        {
+            if (string.IsNullOrWhiteSpace(request.Name))
+                throw new BadRequestException($"The property '{nameof(CreateDepartmentRequestModel)}.{nameof(request.Name)}' cannot be empty");
+
+            if (string.IsNullOrWhiteSpace(request.GroupName))
+                throw new BadRequestException($"The property '{nameof(CreateDepartmentRequestModel)}.{nameof(request.GroupName)}' cannot be empty");
+
+            var departmentDto = new DepartmentDto
+            {
+                GroupName = request.GroupName,
+                Name = request.Name
+            };
+
+            await _departmentService.UpdateDepartment(id, departmentDto);
+            return NoContent();
+        }
+
+        /// <summary>
+        /// DELETE: Removes an existing department.
+        /// </summary>
+        /// <param name="id">Id of the existing department</param>
+        /// <returns>No content</returns>
+        /// <response code="204">No content</response>
+        /// <response code="400">Bad request</response>
+        /// <response code="404">Not found</response>
+        /// <response code="500">Internal server error</response>
+        [HttpDelete("{id}")]
+        [ProducesResponseType(StatusCodes.Status204NoContent)]
+        [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status404NotFound)]
+        [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status500InternalServerError)]
+        public async Task<IActionResult> DeleteDepartment(int id)
+        {
+            if (id <= 0)
+                throw new BadRequestException($"Id must be positive integer");
+
+            await _departmentService.DeleteDepartment(id);
+            return NoContent();
+        }
+
 
         private List<DepartmentResponseModel> MapDepartmentResponseModels(List<DepartmentDto> departments)
         {

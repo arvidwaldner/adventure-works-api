@@ -14,6 +14,9 @@ namespace AdventureWorks.Service.HumanResources
     {
         Task<List<DepartmentDto>> GetAllDepartments();
         Task<DepartmentDto> GetDepartmentById(int id);
+        Task<DepartmentDto> CreateDepartment(DepartmentDto departmentDto);
+        Task UpdateDepartment(int id, DepartmentDto departmentDto);
+        Task DeleteDepartment(int id);
     }
 
     public class DepartmentService : IDepartmentService
@@ -45,6 +48,44 @@ namespace AdventureWorks.Service.HumanResources
 
             var result = MapDepartmentDto(department);
             return result;
+        }
+
+        public async Task<DepartmentDto> CreateDepartment(DepartmentDto departmentDto)
+        {
+            var departmentEntity = new Department 
+            {
+                GroupName = departmentDto.GroupName,
+                Name = departmentDto.Name
+            };
+
+            var createdDepartment = _repository.Insert(departmentEntity);
+            var result = MapDepartmentDto(createdDepartment);
+            return result;
+        }
+
+        public async Task UpdateDepartment(int id, DepartmentDto departmentDto)
+        {
+            var shortId = (short)id;
+            var departmentToUpdate = _repository.GetById(shortId);
+
+            if (departmentToUpdate == null)
+                throw new NotFoundException($"Department with id: '{id}', was not found");
+
+            departmentToUpdate.Name = departmentDto.Name;
+            departmentToUpdate.GroupName = departmentDto.GroupName;
+            departmentToUpdate.ModifiedDate = DateTime.Now;
+            _repository.Update(departmentToUpdate);
+        }
+
+        public async Task DeleteDepartment(int id)
+        {
+            var shortId = (short)id;
+            var departmentToDelete = _repository.GetById(shortId);
+
+            if (departmentToDelete == null)
+                throw new NotFoundException($"Department with id: '{id}', was not found");
+
+            _repository.Delete(shortId);
         }
 
         private List<DepartmentDto> MapDepartmentDtos(List<Department> departments)

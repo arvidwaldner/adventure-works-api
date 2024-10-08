@@ -13,9 +13,10 @@ namespace AdventureWorks.DataAccess.Repositories
         IEnumerable<T> GetAll();
         T GetById(int id);
         T GetById(short id);
-        void Insert(T entity);
+        T Insert(T entity);
         void Update(T entity);
         void Delete(int id);
+        void Delete(short id);
     }
 
     public class Repository<T> : IRepository<T> where T : class
@@ -44,10 +45,11 @@ namespace AdventureWorks.DataAccess.Repositories
             return _dbSet.Find(id);
         }
 
-        public void Insert(T entity)
+        public T Insert(T entity)
         {
-            _dbSet.Add(entity);
+            var insertedEntity = _dbSet.Add(entity);
             _context.SaveChanges();
+            return insertedEntity.Entity;
         }
 
         public void Update(T entity)
@@ -58,6 +60,16 @@ namespace AdventureWorks.DataAccess.Repositories
         }
 
         public void Delete(int id)
+        {
+            T entity = _dbSet.Find(id);
+            if (entity != null)
+            {
+                _dbSet.Remove(entity);
+                _context.SaveChanges();
+            }
+        }
+
+        public void Delete(short id)
         {
             T entity = _dbSet.Find(id);
             if (entity != null)

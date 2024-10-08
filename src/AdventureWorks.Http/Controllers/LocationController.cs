@@ -22,7 +22,7 @@ namespace AdventureWorks.Http.Controllers
         }
 
         /// <summary>
-        /// Returns all locations.
+        ///GET: Returns all locations.
         /// </summary>
         /// <returns>All locations</returns>
         /// <response code="200">Ok</response>
@@ -39,7 +39,7 @@ namespace AdventureWorks.Http.Controllers
         }
 
         /// <summary>
-        /// Returns a location by Id.
+        ///GET: Returns a location by Id.
         /// </summary>
         /// <param name="id">The location Id.</param>
         /// <returns>The location with the specified Id.</returns>

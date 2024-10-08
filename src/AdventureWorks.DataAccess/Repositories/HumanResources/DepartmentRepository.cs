@@ -1,5 +1,6 @@
 ﻿using AdventureWorks.DataAccess.Models;
 using AdventureWorks.DataAccess.Repositories.Products;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -18,6 +19,6 @@ namespace AdventureWorks.DataAccess.Repositories.Production
         public DepartmentRepository(AdventureWorks2022Context context) : base(context)
         {
 
-        }
+        }        
     }
 }

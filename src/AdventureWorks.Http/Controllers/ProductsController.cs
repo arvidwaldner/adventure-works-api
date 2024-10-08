@@ -20,7 +20,7 @@ namespace AdventureWorks.Http.Controllers
         }
 
         /// <summary>
-        /// Returns all products.
+        ///GET: Returns all products.
         /// </summary>
         /// <returns>All products</returns>
         /// <response code="200">Ok</response>
@@ -37,7 +37,7 @@ namespace AdventureWorks.Http.Controllers
         }
 
         /// <summary>
-        /// Returns a product by Id.
+        ///GET: Returns a product by Id.
         /// </summary>
         /// <param name="id">The product Id.</param>
         /// <returns>The product with the specified Id.</returns>
@@ -59,9 +59,8 @@ namespace AdventureWorks.Http.Controllers
             var productResponseModel = MapProductResponseModel(productResult);
 
             return Ok(productResponseModel);
-        }
-        
-        
+        }       
+                
         private List<ProductResponseModel> MapProductResponseModels(List<ProductDto> productResults)
         {
             var productResponseModels = new List<ProductResponseModel>();

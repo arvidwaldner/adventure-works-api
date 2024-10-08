@@ -21,7 +21,7 @@ namespace AdventureWorks.Http.Controllers
         }
 
         /// <summary>
-        /// Returns all product categories.
+        ///GET: Returns all product categories.
         /// </summary>
         /// <returns>All product categories</returns>
         /// <response code="200">Ok</response>
@@ -38,7 +38,7 @@ namespace AdventureWorks.Http.Controllers
         }
 
         /// <summary>
-        /// Returns a product category by Id.
+        ///GET: Returns a product category by Id.
         /// </summary>
         /// <param name="id">The product category Id.</param>
         /// <returns>The product category with the specified Id.</returns>

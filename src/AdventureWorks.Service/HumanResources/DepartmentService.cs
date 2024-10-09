@@ -32,20 +32,12 @@ namespace AdventureWorks.Service.HumanResources
         {
             var departments = _repository.GetAll().ToList();
             var result = MapDepartmentDtos(departments);
-
             return result;
         }
 
         public async Task<DepartmentDto> GetDepartmentById(int id)
         {
-            var shortId = (short)id;
-            var department = _repository.GetById(shortId);
-
-            if (department == null) 
-            {
-                throw new NotFoundException($"Department with id: '{id}', was not found");
-            }
-
+            var department = FindDepartment(id);
             var result = MapDepartmentDto(department);
             return result;
         }
@@ -65,27 +57,43 @@ namespace AdventureWorks.Service.HumanResources
 
         public async Task UpdateDepartment(int id, DepartmentDto departmentDto)
         {
-            var shortId = (short)id;
-            var departmentToUpdate = _repository.GetById(shortId);
+            var departmentToUpdate = FindDepartment(id);
 
-            if (departmentToUpdate == null)
-                throw new NotFoundException($"Department with id: '{id}', was not found");
+            var changed = false;
+            if(departmentToUpdate.Name != departmentDto.Name)
+            {
+                departmentToUpdate.Name = departmentDto.Name;
+                changed = true;
+            }
 
-            departmentToUpdate.Name = departmentDto.Name;
-            departmentToUpdate.GroupName = departmentDto.GroupName;
-            departmentToUpdate.ModifiedDate = DateTime.Now;
-            _repository.Update(departmentToUpdate);
+            if(departmentToUpdate.GroupName != departmentDto.GroupName)
+            {
+                departmentToUpdate.GroupName = departmentDto.GroupName;
+                changed = true;
+            }
+
+            if(changed)
+            {
+                departmentToUpdate.ModifiedDate = DateTime.Now;
+                _repository.Update(departmentToUpdate);
+            }            
         }
 
         public async Task DeleteDepartment(int id)
         {
-            var shortId = (short)id;
-            var departmentToDelete = _repository.GetById(shortId);
+            var departmentToDelete = FindDepartment(id);
+            _repository.Delete(departmentToDelete.DepartmentId);
+        }
 
-            if (departmentToDelete == null)
+        private Department FindDepartment(int id)
+        {
+            var shortId = (short)id;
+            var department = _repository.GetById(shortId);
+
+            if (department == null)
                 throw new NotFoundException($"Department with id: '{id}', was not found");
 
-            _repository.Delete(shortId);
+            return department;
         }
 
         private List<DepartmentDto> MapDepartmentDtos(List<Department> departments)

@@ -34,13 +34,19 @@ namespace AdventureWorks.Service.Production
 
         public async Task<ProductDto> GetProductByIdAsync(int id)
         {
+            var productEntity = FindProduct(id);
+            var productResult = MapProduct(productEntity);
+            return productResult;
+        }
+
+        private Product FindProduct(int id) 
+        {
             var productEntity = _productsRepository.GetById(id);
 
             if (productEntity == null)
                 throw new NotFoundException($"Product with Id '{id}' was not found.");
 
-            var productResult = MapProduct(productEntity);
-            return productResult;
+            return productEntity;
         }
 
         private List<ProductDto> MapProducts(List<Product> productEntities)

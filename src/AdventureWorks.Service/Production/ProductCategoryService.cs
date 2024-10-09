@@ -35,13 +35,19 @@ namespace AdventureWorks.Service.Production
 
         public ProductCategoryDto GetProductCategoryById(int id)
         {
+            var productCategory = FindProductCategory(id);
+            var productCategoryResult = MapProductCategoryResult(productCategory);
+            return productCategoryResult;
+        }
+
+        private ProductCategory FindProductCategory(int id)
+        {
             var productCategory = _productCategoryRepository.GetById(id);
 
             if (productCategory == null)
                 throw new NotFoundException($"The product category with Id '{id}' was not found.");
 
-            var productCategoryResult = MapProductCategoryResult(productCategory);
-            return productCategoryResult;
+            return productCategory;
         }
 
         private List<ProductCategoryDto> MapProductCategoryResults(List<ProductCategory> productCategories)

@@ -16,6 +16,8 @@ namespace AdventureWorks.Service.Production
         List<LocationDto> GetAllLocations();
         LocationDto GetLocationById(int id);
         LocationDto CreateLocation(LocationDto locationDto);
+        Task UpdateLocation(int id, LocationDto locationDto);
+        Task DeleteLocation(int id);
     }
 
     public class LocationService : ILocationService
@@ -51,6 +53,50 @@ namespace AdventureWorks.Service.Production
 
         public LocationDto GetLocationById(int id)
         {
+            var locationEntity = FindLocation(id);
+            var locationDto = MapLocation(locationEntity);
+
+            return locationDto;
+        }
+
+        public async Task UpdateLocation(int id, LocationDto locationDto)
+        {
+            var locationEntityToUpdate = FindLocation(id);
+
+            var changed = false;
+            if(locationEntityToUpdate.Name != locationDto.Name)
+            {
+                locationEntityToUpdate.Name = locationDto.Name;
+                changed = true;
+            }
+
+            if(locationEntityToUpdate.Availability != locationDto.Availability)
+            {
+                locationEntityToUpdate.Availability = locationDto.Availability;
+                changed = true;
+            }
+
+            if(locationEntityToUpdate.CostRate != locationDto.CostRate)
+            {
+                locationEntityToUpdate.CostRate = locationDto.CostRate;
+                changed = true;
+            }
+
+            if(changed)
+            {
+                locationEntityToUpdate.ModifiedDate = DateTime.Now;
+                _locationRepository.Update(locationEntityToUpdate);
+            }
+        }
+
+        public async Task DeleteLocation(int id)
+        {
+            var locationEntity = FindLocation(id);                     
+            _locationRepository.Delete(locationEntity.LocationId);
+        }
+
+        private Location FindLocation(int id)
+        {
             var shortId = (short)id;
 
             var locationEntity = _locationRepository.GetById(shortId);
@@ -58,9 +104,7 @@ namespace AdventureWorks.Service.Production
             if (locationEntity == null)
                 throw new NotFoundException($"Location with id '{id}' was not found.");
 
-            var locationDto = MapLocation(locationEntity);
-
-            return locationDto;
+            return locationEntity;
         }
 
         private List<LocationDto> MapLocations(List<Location> locationEntities)
@@ -87,6 +131,6 @@ namespace AdventureWorks.Service.Production
             };
 
             return locationResult;
-        }        
+        }
     }
 }

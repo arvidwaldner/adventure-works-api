@@ -92,7 +92,8 @@ namespace AdventureWorks.Http.Controllers
 
             var createdDepartment = await _departmentService.CreateDepartment(departmentDto);
             var createdDepartmentResponseModel = MapDepartmentResponseModel(createdDepartment);
-            var createdDepartmentUrl = $"{EndpointConstants.HumanResourcesUrl}/departments/{createdDepartmentResponseModel.DepartmentId}";
+            var baseUrl = $"{Request.Scheme}://{Request.Host}{Request.PathBase}";
+            var createdDepartmentUrl = $"{baseUrl}/{EndpointConstants.HumanResourcesUrl}/departments/{createdDepartmentResponseModel.DepartmentId}";
 
             return Created(createdDepartmentUrl, createdDepartmentResponseModel);
         }

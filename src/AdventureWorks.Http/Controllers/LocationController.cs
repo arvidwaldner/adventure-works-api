@@ -2,6 +2,8 @@
 using AdventureWorks.Common.Exceptions;
 using AdventureWorks.DataAccess.Models;
 using AdventureWorks.Http.Constansts;
+using AdventureWorks.Http.Requests.HumanResources.v1;
+using AdventureWorks.Http.Requests.Production.v1;
 using AdventureWorks.Http.Responses.Production.v1;
 using AdventureWorks.Http.Responses.Products.v1;
 using AdventureWorks.Service.Production;
@@ -71,8 +73,39 @@ namespace AdventureWorks.Http.Controllers
         [HttpOptions]
         public IActionResult Options()
         {
-            Response.Headers.Add("Allow", "GET");
+            Response.Headers.Add("Allow", "GET, POST");
             return Ok();
+        }
+
+        /// <summary>
+        /// POST: Creates a new location
+        /// </summary>
+        /// <param name="request">Request for creating a new location</param>
+        /// <returns>The created location</returns>
+        /// <response code="201">Created</response>
+        /// <response code="400">Bad request</response>
+        /// <response code="500">Internal server error</response>
+        [HttpPost]
+        [ProducesResponseType(typeof(LocationResponseModel), StatusCodes.Status201Created)]
+        [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status500InternalServerError)]
+        public async Task<IActionResult> CreateLocation(CreateLocationRequestModel request)
+        {
+            if (string.IsNullOrWhiteSpace(request.Name))
+                throw new BadRequestException($"The property '{nameof(CreateLocationRequestModel)}.{nameof(request.Name)}' cannot be empty");
+
+            var locationDto = new LocationDto 
+            {
+                Name = request.Name,
+                Availability = request.Availability,
+                CostRate = request.CostRate
+            };
+
+            var createdLocationDto = _locationService.CreateLocation(locationDto);
+            var locationResponseModel = MapLocationResponseModel(createdLocationDto);
+            var baseUrl = $"{Request.Scheme}://{Request.Host}{Request.PathBase}";
+            var createdLocationUrl = $"{baseUrl}/{EndpointConstants.ProductionsUrl}/locations/{locationResponseModel.LocationId}";
+            return Created(createdLocationUrl, locationResponseModel);
         }
 
         private List<LocationResponseModel> MapLocationResponseModels(List<LocationDto> locations)

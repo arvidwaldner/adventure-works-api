@@ -15,6 +15,7 @@ namespace AdventureWorks.Service.Production
     {
         List<LocationDto> GetAllLocations();
         LocationDto GetLocationById(int id);
+        LocationDto CreateLocation(LocationDto locationDto);
     }
 
     public class LocationService : ILocationService
@@ -32,6 +33,20 @@ namespace AdventureWorks.Service.Production
             var locationDtos = MapLocations(locationEntities);
             
             return locationDtos;
+        }
+
+        public LocationDto CreateLocation(LocationDto locationDto)
+        {
+            var locationEntity = new Location
+            {
+                Availability = locationDto.Availability,
+                CostRate = locationDto.CostRate,
+                Name = locationDto.Name                
+            };
+
+            var createdLocation = _locationRepository.Insert(locationEntity);
+            var result = MapLocation(createdLocation);
+            return result;
         }
 
         public LocationDto GetLocationById(int id)

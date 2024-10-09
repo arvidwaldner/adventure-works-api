@@ -14,11 +14,11 @@ namespace AdventureWorks.Http.Controllers
 {
     [Route($"{EndpointConstants.ProductionsUrl}/locations")]
     [ApiController]
-    public class LocationController : ControllerBase
+    public class LocationsController : ControllerBase
     {
         private readonly ILocationService _locationService;
 
-        public LocationController(ILocationService locationService)
+        public LocationsController(ILocationService locationService)
         {
             _locationService = locationService;
         }
@@ -73,7 +73,7 @@ namespace AdventureWorks.Http.Controllers
         [HttpOptions]
         public IActionResult Options()
         {
-            Response.Headers.Add("Allow", "GET, POST");
+            Response.Headers.Add("Allow", "GET, POST, PUT, DELETE");
             return Ok();
         }
 
@@ -106,6 +106,55 @@ namespace AdventureWorks.Http.Controllers
             var baseUrl = $"{Request.Scheme}://{Request.Host}{Request.PathBase}";
             var createdLocationUrl = $"{baseUrl}/{EndpointConstants.ProductionsUrl}/locations/{locationResponseModel.LocationId}";
             return Created(createdLocationUrl, locationResponseModel);
+        }
+
+        /// <summary>
+        /// PUT: Updates an existing location
+        /// </summary>
+        /// <param name="id">Id of existing location</param>
+        /// <param name="request">Request to update existing location</param>
+        /// <returns>No content</returns>
+        /// <response code="204">No content</response>
+        /// <response code="400">Bad request</response>
+        /// <response code="404">Not found</response>
+        /// <response code="500">Internal server error</response>
+        [HttpPut("{id}")]
+        [ProducesResponseType(StatusCodes.Status204NoContent)]
+        [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status404NotFound)]
+        [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status500InternalServerError)]
+        public async Task<IActionResult> UpdateLocation(int id, UpdateLocationRequestModel request)
+        {
+            if (string.IsNullOrWhiteSpace(request.Name))
+                throw new BadRequestException($"The property '{nameof(CreateLocationRequestModel)}.{nameof(request.Name)}' cannot be empty");
+
+            var locationDto = new LocationDto
+            {
+                Name = request.Name,
+                Availability = request.Availability,
+                CostRate = request.CostRate
+            };
+
+            await _locationService.UpdateLocation(id, locationDto);
+            return NoContent();
+        }
+
+        /// <summary>
+        /// DELETE: Removes an existing location
+        /// </summary>
+        /// <param name="id">Id of existing location</param>
+        /// <returns>No content</returns>
+        /// <response code="204">No content</response>
+        /// <response code="404">Not found</response>
+        /// <response code="500">Internal server error</response>
+        [HttpDelete("{id}")]
+        [ProducesResponseType(StatusCodes.Status204NoContent)]
+        [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status404NotFound)]
+        [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status500InternalServerError)]
+        public async Task<IActionResult> DeleteLocation(int id)
+        {
+            await _locationService.DeleteLocation(id);
+            return NoContent();
         }
 
         private List<LocationResponseModel> MapLocationResponseModels(List<LocationDto> locations)

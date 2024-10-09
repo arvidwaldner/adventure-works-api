@@ -13,11 +13,11 @@ namespace AdventureWorks.Http.Controllers
 {
     [Route($"{EndpointConstants.HumanResourcesUrl}/departments")]
     [ApiController]
-    public class DepartmentController : ControllerBase
+    public class DepartmentsController : ControllerBase
     {
         private readonly IDepartmentService _departmentService;
 
-        public DepartmentController(IDepartmentService departmentService)
+        public DepartmentsController(IDepartmentService departmentService)
         {
             _departmentService = departmentService;
         }

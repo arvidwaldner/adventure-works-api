@@ -63,6 +63,18 @@ namespace AdventureWorks.Http.Controllers
             return Ok(locationResponseModel);
         }
 
+        /// <summary>
+        /// OPTIONS: Allowed Http methods for the target resource
+        /// </summary>
+        /// <returns>Allowed Http methods in response header</returns>
+        /// <response code="200">Ok</response>
+        [HttpOptions]
+        public IActionResult Options()
+        {
+            Response.Headers.Add("Allow", "GET");
+            return Ok();
+        }
+
         private List<LocationResponseModel> MapLocationResponseModels(List<LocationDto> locations)
         {
             var result = new List<LocationResponseModel>();

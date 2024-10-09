@@ -62,6 +62,18 @@ namespace AdventureWorks.Http.Controllers
             return Ok(productCategoryResponseModel);
         }
 
+        /// <summary>
+        /// OPTIONS: Allowed Http methods for the target resource
+        /// </summary>
+        /// <returns>Allowed Http methods in response header</returns>
+        /// <response code="200">Ok</response>
+        [HttpOptions]
+        public IActionResult Options()
+        {
+            Response.Headers.Add("Allow", "GET");
+            return Ok();
+        }
+
         private List<ProductCategoryResponseModel> MapProductCategoryResponseModels(List<ProductCategoryDto> productCategoryResults)
         {
             var results = new List<ProductCategoryResponseModel>();

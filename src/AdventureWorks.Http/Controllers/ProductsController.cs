@@ -59,8 +59,20 @@ namespace AdventureWorks.Http.Controllers
             var productResponseModel = MapProductResponseModel(productResult);
 
             return Ok(productResponseModel);
-        }       
-                
+        }
+
+        /// <summary>
+        /// OPTIONS: Allowed Http methods for the target resource
+        /// </summary>
+        /// <returns>Allowed Http methods in response header</returns>
+        /// <response code="200">Ok</response>
+        [HttpOptions]
+        public IActionResult Options()
+        {
+            Response.Headers.Add("Allow", "GET");
+            return Ok();
+        }
+
         private List<ProductResponseModel> MapProductResponseModels(List<ProductDto> productResults)
         {
             var productResponseModels = new List<ProductResponseModel>();

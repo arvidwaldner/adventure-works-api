@@ -153,6 +153,18 @@ namespace AdventureWorks.Http.Controllers
             return NoContent();
         }
 
+        /// <summary>
+        /// OPTIONS: Allowed Http methods for the target resource
+        /// </summary>
+        /// <returns>Allowed Http methods in response header</returns>
+        /// <response code="200">Ok</response>
+        [HttpOptions]
+        public IActionResult Options()
+        {
+            Response.Headers.Add("Allow", "GET, POST, PUT, DELETE");
+            return Ok();
+        }
+
 
         private List<DepartmentResponseModel> MapDepartmentResponseModels(List<DepartmentDto> departments)
         {

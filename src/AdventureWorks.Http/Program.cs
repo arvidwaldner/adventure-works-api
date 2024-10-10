@@ -26,6 +26,18 @@ builder.Services.AddSwaggerGen(c =>
     c.IncludeXmlComments(xmlPath);
 });
 
+builder.Services.AddCors(options => 
+{
+    options.AddPolicy("AllowSpecificOrigins",
+        policy => 
+        {
+            policy.WithOrigins("secret")
+            .AllowAnyMethod()
+            .AllowAnyHeader();
+        });
+   
+});
+
 ServiceConfiguration.ConfigureAdventureWorksServices(builder.Services, builder.Configuration);
 
 var app = builder.Build();
@@ -38,6 +50,8 @@ if (app.Environment.IsDevelopment())
     app.UseSwagger();
     app.UseSwaggerUI();
 }
+
+app.UseCors("AllowSpecificOrigins");
 
 app.UseHttpsRedirection();
 

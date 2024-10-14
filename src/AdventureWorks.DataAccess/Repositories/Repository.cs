@@ -22,7 +22,7 @@ namespace AdventureWorks.DataAccess.Repositories
     public class Repository<T> : IRepository<T> where T : class
     {
         private readonly AdventureWorks2022Context _context;
-        private readonly DbSet<T> _dbSet;
+        protected readonly DbSet<T> _dbSet;
 
         public Repository(AdventureWorks2022Context context)
         {

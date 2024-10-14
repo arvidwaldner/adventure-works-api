@@ -2,6 +2,7 @@
 using AdventureWorks.DataAccess.Repositories;
 using AdventureWorks.DataAccess.Repositories.Production;
 using AdventureWorks.DataAccess.Repositories.Products;
+using AdventureWorks.DataAccess.Repositories.Sales;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -23,6 +24,7 @@ namespace AdventureWorks.DataAccess
             AddGenericRepository(services);
             AddProductionRepositories(services);
             AddHumanResourcesRepositories(services);
+            AddSalesRepositories(services);
         }
 
         private static void AddGenericRepository(IServiceCollection services)
@@ -40,6 +42,11 @@ namespace AdventureWorks.DataAccess
         private static void AddHumanResourcesRepositories(IServiceCollection services)
         {
             services.AddScoped<IDepartmentRepository, DepartmentRepository>();
+        }
+
+        private static void AddSalesRepositories(IServiceCollection services)
+        {
+            services.AddScoped<IStoreRepository, StoreRepository>();
         }
     }
 }

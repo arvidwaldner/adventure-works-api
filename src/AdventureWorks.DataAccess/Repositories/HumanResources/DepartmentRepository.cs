@@ -1,13 +1,6 @@
 ﻿using AdventureWorks.DataAccess.Models;
-using AdventureWorks.DataAccess.Repositories.Products;
-using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
-namespace AdventureWorks.DataAccess.Repositories.Production
+namespace AdventureWorks.DataAccess.Repositories.HumanResources
 {
     public interface IDepartmentRepository : IRepository<Department>
     {

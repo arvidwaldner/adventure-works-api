@@ -1,6 +1,7 @@
 ﻿using AdventureWorks.Common.Domain.HumanResources;
 using AdventureWorks.Common.Exceptions;
 using AdventureWorks.DataAccess.Models;
+using AdventureWorks.DataAccess.Repositories.HumanResources;
 using AdventureWorks.DataAccess.Repositories.Production;
 using System;
 using System.Collections.Generic;

@@ -1,5 +1,6 @@
 ﻿using AdventureWorks.DataAccess.Models;
 using AdventureWorks.DataAccess.Repositories;
+using AdventureWorks.DataAccess.Repositories.HumanResources;
 using AdventureWorks.DataAccess.Repositories.Production;
 using AdventureWorks.DataAccess.Repositories.Products;
 using AdventureWorks.DataAccess.Repositories.Sales;

@@ -27,14 +27,14 @@ namespace AdventureWorks.Service.Sales
 
         public async Task<List<StoreDto>> GetAllStores()
         {
-            var stores = _storeRepository.GetAll().ToList();
-            var results = MapStores(stores);
+            var stores = await _storeRepository.GetAllAsync();
+            var results = MapStores(stores.ToList());
             return results;
         }
 
         public async Task<StoreDto> GetStoreByBusinessEntityId(int businessEntityId)
         {
-            var store = _storeRepository.GetById(businessEntityId);
+            var store = await _storeRepository.GetByIdAsync(businessEntityId);
 
             if (store == null)
                 throw new NotFoundException($"A store with BusinessEntityId: '{businessEntityId}' was not found");

@@ -27,21 +27,21 @@ namespace AdventureWorks.Service.Production
 
         public async Task<List<ProductDto>> GetAllProductsAsync()
         {
-            var productEntities = _productsRepository.GetAll().ToList();
-            var productResults = MapProducts(productEntities);
+            var productEntities = await _productsRepository.GetAllAsync();
+            var productResults = MapProducts(productEntities.ToList());
             return productResults;
         }
 
         public async Task<ProductDto> GetProductByIdAsync(int id)
         {
-            var productEntity = FindProduct(id);
+            var productEntity = await FindProduct(id);
             var productResult = MapProduct(productEntity);
             return productResult;
         }
 
-        private Product FindProduct(int id) 
+        private async Task<Product> FindProduct(int id) 
         {
-            var productEntity = _productsRepository.GetById(id);
+            var productEntity = await _productsRepository.GetByIdAsync(id);
 
             if (productEntity == null)
                 throw new NotFoundException($"Product with Id '{id}' was not found.");

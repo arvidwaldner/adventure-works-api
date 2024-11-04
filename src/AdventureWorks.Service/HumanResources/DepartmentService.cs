@@ -31,14 +31,14 @@ namespace AdventureWorks.Service.HumanResources
 
         public async Task<List<DepartmentDto>> GetAllDepartments()
         {
-            var departments = _repository.GetAll().ToList();
-            var result = MapDepartmentDtos(departments);
+            var departments = await _repository.GetAllAsync();
+            var result = MapDepartmentDtos(departments.ToList());
             return result;
         }
 
         public async Task<DepartmentDto> GetDepartmentById(int id)
         {
-            var department = FindDepartment(id);
+            var department = await FindDepartment(id);
             var result = MapDepartmentDto(department);
             return result;
         }
@@ -51,14 +51,14 @@ namespace AdventureWorks.Service.HumanResources
                 Name = departmentDto.Name
             };
 
-            var createdDepartment = _repository.Insert(departmentEntity);
+            var createdDepartment = await _repository.InsertAsync(departmentEntity);
             var result = MapDepartmentDto(createdDepartment);
             return result;
         }
 
         public async Task UpdateDepartment(int id, DepartmentDto departmentDto)
         {
-            var departmentToUpdate = FindDepartment(id);
+            var departmentToUpdate = await FindDepartment(id);
 
             var changed = false;
             if(departmentToUpdate.Name != departmentDto.Name)
@@ -76,20 +76,20 @@ namespace AdventureWorks.Service.HumanResources
             if(changed)
             {
                 departmentToUpdate.ModifiedDate = DateTime.Now;
-                _repository.Update(departmentToUpdate);
+                await _repository.UpdateAsync(departmentToUpdate);
             }            
         }
 
         public async Task DeleteDepartment(int id)
         {
-            var departmentToDelete = FindDepartment(id);
-            _repository.Delete(departmentToDelete.DepartmentId);
+            var departmentToDelete = await FindDepartment(id);
+            await _repository.DeleteAsync(departmentToDelete.DepartmentId);
         }
 
-        private Department FindDepartment(int id)
+        private async Task<Department> FindDepartment(int id)
         {
             var shortId = (short)id;
-            var department = _repository.GetById(shortId);
+            var department = await _repository.GetByIdAsync(shortId);
 
             if (department == null)
                 throw new NotFoundException($"Department with id: '{id}', was not found");

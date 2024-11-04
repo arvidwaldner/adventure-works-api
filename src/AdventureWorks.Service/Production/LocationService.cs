@@ -13,9 +13,9 @@ namespace AdventureWorks.Service.Production
 {
     public interface ILocationService
     {
-        List<LocationDto> GetAllLocations();
-        LocationDto GetLocationById(int id);
-        LocationDto CreateLocation(LocationDto locationDto);
+        Task<List<LocationDto>> GetAllLocations();
+        Task<LocationDto> GetLocationById(int id);
+        Task<LocationDto> CreateLocation(LocationDto locationDto);
         Task UpdateLocation(int id, LocationDto locationDto);
         Task DeleteLocation(int id);
     }
@@ -29,15 +29,15 @@ namespace AdventureWorks.Service.Production
             _locationRepository = locationRepository;
         }
 
-        public List<LocationDto> GetAllLocations()
+        public async Task<List<LocationDto>> GetAllLocations()
         {
-            var locationEntities = _locationRepository.GetAll().ToList();
-            var locationDtos = MapLocations(locationEntities);
+            var locationEntities = await _locationRepository.GetAllAsync();
+            var locationDtos = MapLocations(locationEntities.ToList());
             
             return locationDtos;
         }
 
-        public LocationDto CreateLocation(LocationDto locationDto)
+        public async Task<LocationDto> CreateLocation(LocationDto locationDto)
         {
             var locationEntity = new Location
             {
@@ -46,14 +46,14 @@ namespace AdventureWorks.Service.Production
                 Name = locationDto.Name                
             };
 
-            var createdLocation = _locationRepository.Insert(locationEntity);
+            var createdLocation = await _locationRepository.InsertAsync(locationEntity);
             var result = MapLocation(createdLocation);
             return result;
         }
 
-        public LocationDto GetLocationById(int id)
+        public async Task<LocationDto> GetLocationById(int id)
         {
-            var locationEntity = FindLocation(id);
+            var locationEntity = await FindLocation(id);
             var locationDto = MapLocation(locationEntity);
 
             return locationDto;
@@ -61,7 +61,7 @@ namespace AdventureWorks.Service.Production
 
         public async Task UpdateLocation(int id, LocationDto locationDto)
         {
-            var locationEntityToUpdate = FindLocation(id);
+            var locationEntityToUpdate = await FindLocation(id);
 
             var changed = false;
             if(locationEntityToUpdate.Name != locationDto.Name)
@@ -85,21 +85,21 @@ namespace AdventureWorks.Service.Production
             if(changed)
             {
                 locationEntityToUpdate.ModifiedDate = DateTime.Now;
-                _locationRepository.Update(locationEntityToUpdate);
+                await _locationRepository.UpdateAsync(locationEntityToUpdate);
             }
         }
 
         public async Task DeleteLocation(int id)
         {
-            var locationEntity = FindLocation(id);                     
-            _locationRepository.Delete(locationEntity.LocationId);
+            var locationEntity = await FindLocation(id);                     
+            await _locationRepository.DeleteAsync(locationEntity.LocationId);
         }
 
-        private Location FindLocation(int id)
+        private async Task<Location> FindLocation(int id)
         {
             var shortId = (short)id;
 
-            var locationEntity = _locationRepository.GetById(shortId);
+            var locationEntity = await _locationRepository.GetByIdAsync(shortId);
 
             if (locationEntity == null)
                 throw new NotFoundException($"Location with id '{id}' was not found.");

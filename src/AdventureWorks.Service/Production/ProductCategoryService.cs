@@ -12,8 +12,8 @@ namespace AdventureWorks.Service.Production
 {
     public interface IProductCategoryService
     {
-        List<ProductCategoryDto> GetProductCategories();
-        ProductCategoryDto GetProductCategoryById(int id);
+        Task<List<ProductCategoryDto>> GetProductCategories();
+        Task <ProductCategoryDto> GetProductCategoryById(int id);
     }
 
     public class ProductCategoryService : IProductCategoryService
@@ -25,24 +25,24 @@ namespace AdventureWorks.Service.Production
             _productCategoryRepository = productCategoryRepository;
         }
 
-        public List<ProductCategoryDto> GetProductCategories()
+        public async Task<List<ProductCategoryDto>> GetProductCategories()
         {
-            var productCategories = _productCategoryRepository.GetAll().ToList();
-            var productCategoryResults = MapProductCategoryResults(productCategories);
+            var productCategories = await _productCategoryRepository.GetAllAsync();
+            var productCategoryResults = MapProductCategoryResults(productCategories.ToList());
 
             return productCategoryResults;
         }
 
-        public ProductCategoryDto GetProductCategoryById(int id)
+        public async Task<ProductCategoryDto> GetProductCategoryById(int id)
         {
-            var productCategory = FindProductCategory(id);
+            var productCategory = await FindProductCategory(id);
             var productCategoryResult = MapProductCategoryResult(productCategory);
             return productCategoryResult;
         }
 
-        private ProductCategory FindProductCategory(int id)
+        private async Task<ProductCategory> FindProductCategory(int id)
         {
-            var productCategory = _productCategoryRepository.GetById(id);
+            var productCategory = await _productCategoryRepository.GetByIdAsync(id);
 
             if (productCategory == null)
                 throw new NotFoundException($"The product category with Id '{id}' was not found.");

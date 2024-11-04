@@ -11,12 +11,19 @@ namespace AdventureWorks.DataAccess.Repositories
     public interface IRepository<T> where T : class
     {
         IEnumerable<T> GetAll();
+        Task<IEnumerable<T>> GetAllAsync();
         T GetById(int id);
+        Task<T> GetByIdAsync(int id);
         T GetById(short id);
+        Task<T> GetByIdAsync(short id);
         T Insert(T entity);
+        Task<T> InsertAsync(T entity);
         void Update(T entity);
+        Task UpdateAsync(T entity);
         void Delete(int id);
+        Task DeleteAsync(int id);
         void Delete(short id);
+        Task DeleteAsync(short id);
     }
 
     public class Repository<T> : IRepository<T> where T : class
@@ -35,14 +42,29 @@ namespace AdventureWorks.DataAccess.Repositories
             return _dbSet.ToList();
         }
 
+        public async Task<IEnumerable<T>> GetAllAsync()
+        {
+            return await _dbSet.ToListAsync();
+        }
+
         public T GetById(int id)
         {
             return _dbSet.Find(id);
         }
 
+        public async Task<T> GetByIdAsync(int id)
+        {
+            return await _dbSet.FindAsync(id);
+        }
+
         public T GetById(short id)
         {
             return _dbSet.Find(id);
+        }
+
+        public async Task<T> GetByIdAsync(short id)
+        {
+            return await _dbSet.FindAsync(id);
         }
 
         public T Insert(T entity)
@@ -52,11 +74,25 @@ namespace AdventureWorks.DataAccess.Repositories
             return insertedEntity.Entity;
         }
 
+        public async Task<T> InsertAsync(T entity)
+        {
+            var insertedEntity = await _dbSet.AddAsync(entity);
+            await _context.SaveChangesAsync();
+            return insertedEntity.Entity;
+        }
+
         public void Update(T entity)
         {
             _dbSet.Attach(entity);
             _context.Entry(entity).State = EntityState.Modified;
             _context.SaveChanges();
+        }
+
+        public async Task UpdateAsync(T entity)
+        {
+            _dbSet.Attach(entity);
+            _context.Entry(entity).State = EntityState.Modified;
+            await _context.SaveChangesAsync();
         }
 
         public void Delete(int id)
@@ -69,6 +105,16 @@ namespace AdventureWorks.DataAccess.Repositories
             }
         }
 
+        public async Task DeleteAsync(int id)
+        {
+            T entity = await _dbSet.FindAsync(id);
+            if (entity != null)
+            {
+                _dbSet.Remove(entity);
+                await _context.SaveChangesAsync();
+            }
+        }
+
         public void Delete(short id)
         {
             T entity = _dbSet.Find(id);
@@ -76,6 +122,16 @@ namespace AdventureWorks.DataAccess.Repositories
             {
                 _dbSet.Remove(entity);
                 _context.SaveChanges();
+            }
+        }           
+             
+        public async Task DeleteAsync(short id)
+        {
+            T entity = await _dbSet.FindAsync(id);
+            if (entity != null)
+            {
+                _dbSet.Remove(entity);
+                await _context.SaveChangesAsync();
             }
         }
     }

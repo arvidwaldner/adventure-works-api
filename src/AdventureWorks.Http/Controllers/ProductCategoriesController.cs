@@ -31,7 +31,7 @@ namespace AdventureWorks.Http.Controllers
         [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status500InternalServerError)]
         public async Task<IActionResult> GetProductCategories()
         {
-            var productCategoriesResults =  _productCategoryService.GetProductCategories();
+            var productCategoriesResults = await  _productCategoryService.GetProductCategories();
             var productCategoryResponseModels = MapProductCategoryResponseModels(productCategoriesResults);
 
             return Ok(productCategoryResponseModels);
@@ -56,7 +56,7 @@ namespace AdventureWorks.Http.Controllers
             if (id <= 0)
                 throw new BadRequestException($"Id must be positive integer");
 
-            var productCategoryResult = _productCategoryService.GetProductCategoryById(id);
+            var productCategoryResult = await _productCategoryService.GetProductCategoryById(id);
             var productCategoryResponseModel = MapProductCategoryResponseModel(productCategoryResult);
 
             return Ok(productCategoryResponseModel);

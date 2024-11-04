@@ -52,13 +52,13 @@ namespace AdventureWorks.Service.Test
                 CreateDepartmentDto("Third", "ThirdGroup", 3, date3),
             };
 
-            _departmentRepositoryMock.Setup(x => x.GetAll())
-                .Returns(departments);
+            _departmentRepositoryMock.Setup(x => x.GetAllAsync())
+                .ReturnsAsync(departments);
 
             var actualDepartmentDtos = await _target.GetAllDepartments();
             VerifyDepartments(expectedDepartmentDtos, actualDepartmentDtos);
 
-            _departmentRepositoryMock.Verify(x => x.GetAll(), Times.Once);
+            _departmentRepositoryMock.Verify(x => x.GetAllAsync(), Times.Once);
         }
 
         [TestMethod]
@@ -78,13 +78,13 @@ namespace AdventureWorks.Service.Test
             var matchingDepartment = departments[1];
             var expectedDepartmentDto = CreateDepartmentDto("Second", "SecondGroup", 2, date2);
 
-            _departmentRepositoryMock.Setup(x => x.GetById((short)2))
-                .Returns(matchingDepartment);
+            _departmentRepositoryMock.Setup(x => x.GetByIdAsync((short)2))
+                .ReturnsAsync(matchingDepartment);
 
             var actualDepartmentDto = await _target.GetDepartmentById(2);
             VerifyDepartment(expectedDepartmentDto, actualDepartmentDto);
 
-            _departmentRepositoryMock.Verify(x => x.GetById((short)2), Times.Once);
+            _departmentRepositoryMock.Verify(x => x.GetByIdAsync((short)2), Times.Once);
         }
 
         [TestMethod]
@@ -101,8 +101,8 @@ namespace AdventureWorks.Service.Test
                 CreateDepartment("Third", "ThirdGroup", 3, date3),
             };
 
-            _departmentRepositoryMock.Setup(x => x.GetById((short)4))
-                .Returns((Department)null);
+            _departmentRepositoryMock.Setup(x => x.GetByIdAsync((short)4))
+                .ReturnsAsync((Department)null);
 
             Exception actual = new Exception();
             try
@@ -118,7 +118,7 @@ namespace AdventureWorks.Service.Test
             Assert.IsNotNull(actual.Message);
             Assert.AreEqual("Department with id: '4', was not found", actual.Message);
 
-            _departmentRepositoryMock.Verify(x => x.GetById((short)4), Times.Once);
+            _departmentRepositoryMock.Verify(x => x.GetByIdAsync((short)4), Times.Once);
         }
 
         private void VerifyDepartments(List<DepartmentDto> expected, List<DepartmentDto> actual)

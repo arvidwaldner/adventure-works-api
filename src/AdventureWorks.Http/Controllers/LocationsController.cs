@@ -34,7 +34,7 @@ namespace AdventureWorks.Http.Controllers
         [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status500InternalServerError)]
         public async Task<IActionResult> GetLocations()
         {
-            var locations = _locationService.GetAllLocations();
+            var locations = await _locationService.GetAllLocations();
             var locationResponseModels = MapLocationResponseModels(locations);
 
             return Ok(locationResponseModels);
@@ -59,7 +59,7 @@ namespace AdventureWorks.Http.Controllers
             if (id <= 0)
                 throw new BadRequestException($"Id must be positive integer");
 
-            var location = _locationService.GetLocationById(id);
+            var location = await _locationService.GetLocationById(id);
             var locationResponseModel = MapLocationResponseModel(location);
 
             return Ok(locationResponseModel);
@@ -101,7 +101,7 @@ namespace AdventureWorks.Http.Controllers
                 CostRate = request.CostRate
             };
 
-            var createdLocationDto = _locationService.CreateLocation(locationDto);
+            var createdLocationDto = await _locationService.CreateLocation(locationDto);
             var locationResponseModel = MapLocationResponseModel(createdLocationDto);
             var baseUrl = $"{Request.Scheme}://{Request.Host}{Request.PathBase}";
             var createdLocationUrl = $"{baseUrl}/{EndpointConstants.ProductionsUrl}/locations/{locationResponseModel.LocationId}";

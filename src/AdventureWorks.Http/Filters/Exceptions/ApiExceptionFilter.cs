@@ -12,7 +12,7 @@ namespace AdventureWorks.Http.Filters.Exceptions
 
             if(context.Exception is NotFoundException)
             {
-                problemDetails = MapProblemDetails(StatusCodes.Status404NotFound, "Product not found", context);
+                problemDetails = MapProblemDetails(StatusCodes.Status404NotFound, "Requested resource not found", context);
                 context.Result = new NotFoundObjectResult(problemDetails);
             }
             else if(context.Exception is BadRequestException)

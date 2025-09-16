@@ -4,6 +4,6 @@ REST api for adventure works
 Implemented with:
 
 * .Net
-* .EntityFrameWorkCore (Database first)
+* EntityFrameWorkCore (Database first)
 * SwaggerUI
   

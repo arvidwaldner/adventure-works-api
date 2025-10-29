@@ -28,14 +28,17 @@ builder.Services.AddSwaggerGen(c =>
 
 builder.Services.AddCors(options => 
 {
-    options.AddPolicy("AllowSpecificOrigins",
-        policy => 
-        {
-            policy.WithOrigins("http://localhost:3001")
-            .AllowAnyMethod()
-            .AllowAnyHeader();
-        });
-   
+    options.AddPolicy("AllowMultipleOrigins", policy =>
+    {
+        policy.WithOrigins(
+            "http://localhost:4200",
+            "https://localhost:4200",
+            "http://localhost:5173",
+            "https://localhost:5173")
+        .AllowAnyHeader()
+        .AllowAnyMethod()
+        .AllowCredentials();
+    });    
 });
 
 ServiceConfiguration.ConfigureAdventureWorksServices(builder.Services, builder.Configuration);
@@ -51,7 +54,7 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
-app.UseCors("AllowSpecificOrigins");
+app.UseCors("AllowMultipleOrigins");
 
 app.UseHttpsRedirection();
 
